@@ -17,20 +17,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/series', function(){
+Route::get('/ola', function(){
     echo"Olá Mundo";
 });
 
-Route::get('/animes', function () {
-    $animes=[
-        'Code Geass',
-        'Fullmetal Alchemist',
-        'Steins Gate'
-    ];
-    $html = "<ul>";
-        foreach($animes as $anime){
-            $html .="<li>$anime</li>";
-        }
-    $html .= "</ul>";
-        return $html;
-});
+Route::get('/animes', [App\Http\Controllers\AnimesController::class, 'listarAnimes'])->name('listarAnimes');
