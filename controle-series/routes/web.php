@@ -13,12 +13,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Route::get('/ola', function(){
     echo"Olá Mundo";
 });
 
-Route::get('/animes', [App\Http\Controllers\AnimesController::class, 'listarAnimes'])->name('listarAnimes');
+Route::get('/animes', [App\Http\Controllers\AnimesController::class, 'index'])->name('index');
+Route::get('/animes/criar', [App\Http\Controllers\AnimesController::class, 'create'])->name('criaranime');
+Route::post('/animes/criar', [App\Http\Controllers\AnimesController::class, 'store'])->name('salvaranime');
+Route::delete('/animes/{id}', [App\Http\Controllers\AnimesController::class, 'destroy'])->name('removeranime');
