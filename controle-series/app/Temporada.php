@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App;
 
 use App\Anime;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,7 +10,7 @@ class Temporada extends Model
 {
     public $timestamps = false;
     protected $fillable = ['numero'];
-    
+
     use HasFactory;
 
     public function episodios () {

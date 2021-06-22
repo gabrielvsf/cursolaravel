@@ -6,7 +6,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Anime;
 use App\Http\Requests\AnimesFormRequest;
-
+use App\Temporada;
+use App\Episodio;
+use App\Services\CriadorDeAnime;
+use App\Services\RemovedorDeAnime;
 
 class AnimesController extends Controller
 {
@@ -26,25 +29,19 @@ class AnimesController extends Controller
 
     }
 
-    public function store(AnimesFormRequest $request){
+    public function store(AnimesFormRequest $request, CriadorDeAnime $criadorDeAnime){
         
-        $anime = Anime::create(['nome'=> $request-> nome]);
-        $qtdTemporadas = $request->qtd_temporadas;
-        for($i=1; $i <= $qtdTemporadas; $i++){
-            $temporada= $anime->temporadas()->create(['numero' => $i]);
-            for($j=1; $j <= $request->eps_por_temporada; $j++){
-                $temporada->episodios()->create(['numero' => $j]);
-            }
-        }
-        
+        $anime= $criadorDeAnime->criarAnime($request->nome, $request->qtd_temporadas, $request->eps_por_temporada);
+
         $request->session()->flash('mensagem',"Anime {$anime->nome} adicionado com sucesso");
         return redirect('/animes');
     }
+ 
+    public function destroy(Request $request, RemovedorDeAnime $removedorDeAnime){
 
-    public function destroy(Request $request){
-        Anime::destroy($request->id);
-
-        $request->session()->flash('mensagem',"Anime removido com sucesso");
+        $nomeAnime = $removedorDeAnime->removerAnime($request->id);
+        
+        $request->session()->flash('mensagem',"O anime '$nomeAnime' foi removido com sucesso");
 
         return redirect('/animes');
     }
